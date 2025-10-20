@@ -35,6 +35,7 @@ type builder struct {
 	timeout time.Duration
 
 	defaultTimeout time.Duration
+	timeoutFlag    bool
 
 	interceptors   []Interceptor
 	loggerProvider LoggerProvider
@@ -54,8 +55,8 @@ func newBuilder(appName string, options ...BuilderOption) *builder {
 func (b *builder) BindRoot(flagSet *pflag.FlagSet) {
 	flagSet.BoolVar(&b.debug, "debug", false, "Turn on debug logging")
 	flagSet.StringVar(&b.logFormat, "log-format", "color", "The log format [text,color,json]")
-	if b.defaultTimeout > 0 {
-		flagSet.DurationVar(&b.timeout, "timeout", b.defaultTimeout, `The duration until timing out, setting it to zero means no timeout`)
+	if b.timeoutFlag {
+		flagSet.DurationVar(&b.timeout, "timeout", b.defaultTimeout, `The duration until timing out, setting it to 0 means no timeout`)
 	}
 
 	// We do not officially support this flag, this is for testing, where we need warnings turned off.
