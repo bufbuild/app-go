@@ -55,7 +55,7 @@ func newBuilder(appName string, options ...BuilderOption) *builder {
 func (b *builder) BindRoot(flagSet *pflag.FlagSet) {
 	flagSet.BoolVar(&b.debug, "debug", false, "Turn on debug logging")
 	flagSet.StringVar(&b.logFormat, "log-format", "color", "The log format [text,color,json]")
-	if b.defaultTimeout > 0 || b.timeoutFlag {
+	if b.timeoutFlag {
 		flagSet.DurationVar(&b.timeout, "timeout", b.defaultTimeout, `The duration until timing out, setting it to 0 means no timeout`)
 	}
 

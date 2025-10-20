@@ -137,6 +137,7 @@ type BuilderOption func(*builder)
 func BuilderWithTimeout(defaultTimeout time.Duration) BuilderOption {
 	return func(builder *builder) {
 		builder.defaultTimeout = defaultTimeout
+		builder.timeoutFlag = true
 	}
 }
 
