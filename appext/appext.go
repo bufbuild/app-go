@@ -113,7 +113,32 @@ type Interceptor func(func(context.Context, Container) error) func(context.Conte
 
 // SubCommandBuilder builds run functions for sub-commands.
 type SubCommandBuilder interface {
-	NewRunFunc(func(context.Context, Container) error) func(context.Context, app.Container) error
+	// NewRunFunc builds a new Run function.
+	NewRunFunc(func(context.Context, Container) error, ...NewRunFuncOption) func(context.Context, app.Container) error
+}
+
+// NewRunFuncOption is an option for NewRunFunc.
+type NewRunFuncOption func(*newRunFuncOptions)
+
+// NewRunFuncWithTimeoutOverride returns a NewRunFuncOption that overrides the timeout setting from
+// BuilderWithTimeout.
+//
+// If this function is called with 0, this will disable the timeout.
+//
+// This function has no effect if BuilderWithTimeout was not used. This function does
+// not result in the help for --timeout being updated. Call HideTimeoutFlag
+// to handle this issue.
+func NewRunFuncWithTimeoutOverride(timeoutOverride time.Duration) NewRunFuncOption {
+	return func(newRunFuncOptions *newRunFuncOptions) {
+		newRunFuncOptions.timeoutOverride = &timeoutOverride
+	}
+}
+
+// HideTimeoutFlag hides the timeout flag.
+//
+// This is needed if using NewRunFuncWithTimeoutOverride in a sub-command.
+func HideTimeoutFlag(flagSet *pflag.FlagSet) {
+	_ = flagSet.MarkHidden("timeout")
 }
 
 // Builder builds run functions for both top-level commands and sub-commands.
@@ -284,4 +309,12 @@ func unmarshalYAMLNonStrict(data []byte, value any) error {
 		return fmt.Errorf("could not unmarshal as YAML: %w", err)
 	}
 	return nil
+}
+
+type newRunFuncOptions struct {
+	timeoutOverride *time.Duration
+}
+
+func newNewRunFuncOptions() *newRunFuncOptions {
+	return &newRunFuncOptions{}
 }

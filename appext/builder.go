@@ -70,13 +70,18 @@ func (b *builder) BindRoot(flagSet *pflag.FlagSet) {
 
 func (b *builder) NewRunFunc(
 	f func(context.Context, Container) error,
+	options ...NewRunFuncOption,
 ) func(context.Context, app.Container) error {
+	newRunFuncOptions := newNewRunFuncOptions()
+	for _, option := range options {
+		option(newRunFuncOptions)
+	}
 	interceptor := chainInterceptors(b.interceptors...)
 	return func(ctx context.Context, appContainer app.Container) error {
 		if interceptor != nil {
-			return b.run(ctx, appContainer, interceptor(f))
+			return b.run(ctx, appContainer, interceptor(f), newRunFuncOptions.timeoutOverride)
 		}
-		return b.run(ctx, appContainer, f)
+		return b.run(ctx, appContainer, f, newRunFuncOptions.timeoutOverride)
 	}
 }
 
@@ -84,6 +89,7 @@ func (b *builder) run(
 	ctx context.Context,
 	appContainer app.Container,
 	f func(context.Context, Container) error,
+	timeoutOverride *time.Duration,
 ) error {
 	logLevel, err := getLogLevel(b.debug, b.noWarn)
 	if err != nil {
@@ -104,8 +110,15 @@ func (b *builder) run(
 	container := newContainer(nameContainer, logger)
 
 	var cancel context.CancelFunc
-	if b.timeout != 0 {
-		ctx, cancel = context.WithTimeout(ctx, b.timeout)
+	timeout := b.timeout
+	// If we have a timeout override, and BuilderWithTimeout was called, then use
+	// the timeout override. Otherwise we ignore it. Calling NewRunFuncWithTimeoutOverride
+	// has no effect if BuilderWithTimeout was not used.
+	if timeoutOverride != nil && b.defaultTimeout > 0 {
+		timeout = *timeoutOverride
+	}
+	if timeout != 0 {
+		ctx, cancel = context.WithTimeout(ctx, timeout)
 		defer cancel()
 	}
 
