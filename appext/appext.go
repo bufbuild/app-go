@@ -130,10 +130,22 @@ func NewBuilder(appName string, options ...BuilderOption) Builder {
 // BuilderOption is an option for a new Builder.
 type BuilderOption func(*builder)
 
-// BuilderWithTimeout returns a new BuilderOption that adds a timeout flag and the default timeout.
+// BuilderWithTimeout returns a new BuilderOption that adds a timeout flag with the default timeout.
+//
+// If defaultTimeout is 0, this has no effect. Use BuilderWithTimeoutFlag to add a timeout flag
+// with the default being 0.
 func BuilderWithTimeout(defaultTimeout time.Duration) BuilderOption {
 	return func(builder *builder) {
 		builder.defaultTimeout = defaultTimeout
+	}
+}
+
+// BuilderWithTimeoutFlag returns a new BuilderOption that adds a timeout flag.
+//
+// Calling BuilderWithTimeout with a non-zero timeout implicitly calls BuilderWithTimeoutFlag.
+func BuilderWithTimeoutFlag() BuilderOption {
+	return func(builder *builder) {
+		builder.timeoutFlag = true
 	}
 }
 
