@@ -132,20 +132,10 @@ type BuilderOption func(*builder)
 
 // BuilderWithTimeout returns a new BuilderOption that adds a timeout flag with the default timeout.
 //
-// If defaultTimeout is 0, this has no effect. Use BuilderWithTimeoutFlag to add a timeout flag
-// with the default being 0.
+// If defaultTimeout is 0, no timeout will be used by default, but the flag will exist.
 func BuilderWithTimeout(defaultTimeout time.Duration) BuilderOption {
 	return func(builder *builder) {
 		builder.defaultTimeout = defaultTimeout
-		builder.timeoutFlag = true
-	}
-}
-
-// BuilderWithTimeoutFlag returns a new BuilderOption that adds a timeout flag.
-//
-// Calling BuilderWithTimeout with a non-zero timeout implicitly calls BuilderWithTimeoutFlag.
-func BuilderWithTimeoutFlag() BuilderOption {
-	return func(builder *builder) {
 		builder.timeoutFlag = true
 	}
 }
