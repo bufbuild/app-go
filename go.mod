@@ -1,8 +1,6 @@
 module buf.build/go/app
 
-go 1.23.0
-
-toolchain go1.24.3
+go 1.25.0
 
 require (
 	buf.build/go/interrupt v1.1.0

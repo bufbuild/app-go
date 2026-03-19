@@ -1,4 +1,4 @@
-// Copyright 2025 Buf Technologies, Inc.
+// Copyright 2025-2026 Buf Technologies, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -330,9 +330,9 @@ func commandToCobra(
 		cobraCommand.Run = func(_ *cobra.Command, args []string) {
 			printUsage(container, cobraCommand.UsageString())
 			if len(args) == 0 {
-				*runErrAddr = errors.New("Sub-command required.")
+				*runErrAddr = errors.New("sub-command required")
 			} else {
-				*runErrAddr = fmt.Errorf("Unknown sub-command: %s", strings.Join(args, " "))
+				*runErrAddr = fmt.Errorf("unknown sub-command: %s", strings.Join(args, " "))
 			}
 		}
 		for _, subCommand := range command.SubCommands {
