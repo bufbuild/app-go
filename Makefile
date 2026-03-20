@@ -64,7 +64,6 @@ generate: $(BIN)/license-header ## Regenerate code and licenses
 
 .PHONY: upgrade
 upgrade: ## Upgrade dependencies
-	go mod edit -toolchain=$(GO_MOD_GOTOOLCHAIN)
 	go get -u -t ./... $(GO_GET_PKGS)
 	go mod tidy -v
 
