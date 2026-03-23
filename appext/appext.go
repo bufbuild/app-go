@@ -91,20 +91,33 @@ func NewLoggerContainer(logger *slog.Logger) LoggerContainer {
 	return newLoggerContainer(logger)
 }
 
+// LogFormatContainer provides the [LogFormat] set for the [Container].
+type LogFormatContainer interface {
+	LogFormat() LogFormat
+}
+
+// NewLogFormatContainer returns a new LogFormatContainer.
+func NewLogFormatContainer(logFormat LogFormat) LogFormatContainer {
+	return newLogFormatContainer(logFormat)
+}
+
 // Container contains not just the base app container, but all extended containers.
 type Container interface {
 	NameContainer
 	LoggerContainer
+	LogFormatContainer
 }
 
 // NewContainer returns a new Container.
 func NewContainer(
 	nameContainer NameContainer,
 	logger *slog.Logger,
+	logFormat LogFormat,
 ) Container {
 	return newContainer(
 		nameContainer,
 		logger,
+		logFormat,
 	)
 }
 

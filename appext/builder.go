@@ -102,7 +102,7 @@ func (b *builder) run(
 	if err != nil {
 		return err
 	}
-	container := newContainer(nameContainer, logger)
+	container := newContainer(nameContainer, logger, logFormat)
 
 	var cancel context.CancelFunc
 	if b.timeout != 0 {

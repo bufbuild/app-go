@@ -14,24 +14,16 @@
 
 package appext
 
-import (
-	"log/slog"
-)
-
-type container struct {
-	NameContainer
-	LoggerContainer
-	LogFormatContainer
+type logFormatContainer struct {
+	logFormat LogFormat
 }
 
-func newContainer(
-	nameContainer NameContainer,
-	logger *slog.Logger,
-	logFormat LogFormat,
-) *container {
-	return &container{
-		NameContainer:      nameContainer,
-		LoggerContainer:    newLoggerContainer(logger),
-		LogFormatContainer: newLogFormatContainer(logFormat),
+func newLogFormatContainer(logFormat LogFormat) *logFormatContainer {
+	return &logFormatContainer{
+		logFormat: logFormat,
 	}
+}
+
+func (c *logFormatContainer) LogFormat() LogFormat {
+	return c.logFormat
 }
