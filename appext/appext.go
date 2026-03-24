@@ -81,7 +81,7 @@ func NewNameContainer(baseContainer app.Container, appName string) (NameContaine
 	return newNameContainer(baseContainer, appName)
 }
 
-// LoggerContainer provides a *slog.Logger.
+// LoggerContainer provides the *slog.Logger set for the Container.
 type LoggerContainer interface {
 	Logger() *slog.Logger
 }
@@ -91,9 +91,18 @@ func NewLoggerContainer(logger *slog.Logger) LoggerContainer {
 	return newLoggerContainer(logger)
 }
 
+// LogLevelContainer provides the LogLevel set for the Container.
+type LogLevelContainer interface {
+	LogLevel() LogLevel
+}
+
+// NewLogLevelContainer returns a new LogLevelContainer.
+func NewLogLevelContainer(logLevel LogLevel) LogLevelContainer {
+	return newLogLevelContainer(logLevel)
+}
+
 // LogFormatContainer provides the LogFormat set for the Container.
 type LogFormatContainer interface {
-	// LogFormat returns the LogFormat configured for the Container.
 	LogFormat() LogFormat
 }
 
@@ -106,6 +115,7 @@ func NewLogFormatContainer(logFormat LogFormat) LogFormatContainer {
 type Container interface {
 	NameContainer
 	LoggerContainer
+	LogLevelContainer
 	LogFormatContainer
 }
 
@@ -113,11 +123,13 @@ type Container interface {
 func NewContainer(
 	nameContainer NameContainer,
 	logger *slog.Logger,
+	logLevel LogLevel,
 	logFormat LogFormat,
 ) Container {
 	return newContainer(
 		nameContainer,
 		logger,
+		logLevel,
 		logFormat,
 	)
 }
