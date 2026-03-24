@@ -91,8 +91,9 @@ func NewLoggerContainer(logger *slog.Logger) LoggerContainer {
 	return newLoggerContainer(logger)
 }
 
-// LogFormatContainer provides the [LogFormat] set for the [Container].
+// LogFormatContainer provides the LogFormat set for the Container.
 type LogFormatContainer interface {
+	// LogFormat returns the LogFormat configured for the Container.
 	LogFormat() LogFormat
 }
 
