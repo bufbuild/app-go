@@ -52,9 +52,12 @@ func newBuilder(appName string, options ...BuilderOption) *builder {
 	return builder
 }
 
+// LogFormatFlagName is the name of the --log-format flag registered by BindRoot.
+const LogFormatFlagName = "log-format"
+
 func (b *builder) BindRoot(flagSet *pflag.FlagSet) {
 	flagSet.BoolVar(&b.debug, "debug", false, "Turn on debug logging")
-	flagSet.StringVar(&b.logFormat, "log-format", "color", "The log format [text,color,json]")
+	flagSet.StringVar(&b.logFormat, LogFormatFlagName, "color", "The log format [text,color,json]")
 	if b.timeoutFlag {
 		flagSet.DurationVar(&b.timeout, "timeout", b.defaultTimeout, `The duration until timing out, setting it to 0 means no timeout`)
 	}

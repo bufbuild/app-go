@@ -52,7 +52,7 @@ type Command struct {
 	Hidden bool
 	// BindFlags allows binding of flags on build.
 	BindFlags func(*pflag.FlagSet)
-	// BindPersistentFlags allows binding of flags on build.
+	// BindPersistentFlags allows binding of persistent flags on build.
 	BindPersistentFlags func(*pflag.FlagSet)
 	// NormalizeFlag allows for normalization of flag names.
 	NormalizeFlag func(*pflag.FlagSet, string) string

@@ -16,52 +16,43 @@ package appext
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 )
 
+// LogFormat is a format to print logs in.
+type LogFormat string
+
 const (
 	// LogFormatText is the text log format.
-	LogFormatText LogFormat = iota + 1
+	LogFormatText LogFormat = "text"
 	// LogFormatColor is the colored text log format.
 	//
 	// This is the default value when parsing LogFormats. However, unless BuilderWithLoggerProvider
 	// is used, there is no difference between LogFormatText and LogFormatColor.
-	LogFormatColor
+	LogFormatColor LogFormat = "color"
 	// LogFormatJSON is the JSON log format.
-	LogFormatJSON
+	LogFormatJSON LogFormat = "json"
 )
 
-// LogFormat is a format to print logs in.
-type LogFormat int
-
-// String implements fmt.Stringer.
-func (l LogFormat) String() string {
-	switch l {
-	case LogFormatText:
-		return "text"
-	case LogFormatColor:
-		return "color"
-	case LogFormatJSON:
-		return "json"
-	default:
-		return strconv.Itoa(int(l))
-	}
+// AllLogFormatStrings contains all valid values for the --log-format flag.
+var AllLogFormatStrings = []string{
+	string(LogFormatText),
+	string(LogFormatColor),
+	string(LogFormatJSON),
 }
 
 // ParseLogFormat parses the log format for the string.
 //
 // If logFormatString is empty, this returns LogFormatColor.
 func ParseLogFormat(logFormatString string) (LogFormat, error) {
-	logFormatString = strings.TrimSpace(strings.ToLower(logFormatString))
-	switch logFormatString {
-	case "text":
+	switch LogFormat(strings.TrimSpace(strings.ToLower(logFormatString))) {
+	case LogFormatText:
 		return LogFormatText, nil
-	case "color", "":
+	case LogFormatColor, "":
 		return LogFormatColor, nil
-	case "json":
+	case LogFormatJSON:
 		return LogFormatJSON, nil
 	default:
-		return 0, fmt.Errorf("unknown log format [text,color,json]: %q", logFormatString)
+		return "", fmt.Errorf("unknown log format [text,color,json]: %q", logFormatString)
 	}
 }
