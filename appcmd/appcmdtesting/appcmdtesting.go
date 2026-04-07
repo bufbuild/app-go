@@ -1,4 +1,4 @@
-// Copyright 2025 Buf Technologies, Inc.
+// Copyright 2025-2026 Buf Technologies, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -176,7 +176,7 @@ func WithStdout(stdout io.Writer) RunOption {
 	}
 }
 
-// WithStdout will attach the given stderr to write to.
+// WithStderr will attach the given stderr to write to.
 func WithStderr(stderr io.Writer) RunOption {
 	return func(runOptions *runOptions) {
 		runOptions.stderr = stderr
@@ -200,7 +200,7 @@ func WithExpectedStdout(expectedStdout string) RunOption {
 	}
 }
 
-// WithExpectedStdout will result in an error if the stderr does not exactly equal the given string.
+// WithExpectedStderr will result in an error if the stderr does not exactly equal the given string.
 //
 // Note that this can be called with empty, which will result in Run verifying that the stderr is empty.
 func WithExpectedStderr(expectedStderr string) RunOption {
