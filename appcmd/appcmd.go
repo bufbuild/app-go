@@ -330,9 +330,9 @@ func commandToCobra(
 		cobraCommand.Run = func(_ *cobra.Command, args []string) {
 			printUsage(container, cobraCommand.UsageString())
 			if len(args) == 0 {
-				*runErrAddr = errors.New("sub-command required")
+				*runErrAddr = errors.New("Sub-command required")
 			} else {
-				*runErrAddr = fmt.Errorf("unknown sub-command: %s", strings.Join(args, " "))
+				*runErrAddr = fmt.Errorf("Unknown sub-command: %s", strings.Join(args, " "))
 			}
 		}
 		for _, subCommand := range command.SubCommands {
