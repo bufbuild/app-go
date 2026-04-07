@@ -1,4 +1,4 @@
-// Copyright 2025-2026 Buf Technologies, Inc.
+// Copyright 2025 Buf Technologies, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,27 +14,16 @@
 
 package appext
 
-import (
-	"log/slog"
-)
-
-type container struct {
-	NameContainer
-	LoggerContainer
-	LogLevelContainer
-	LogFormatContainer
+type logFormatContainer struct {
+	logFormat LogFormat
 }
 
-func newContainer(
-	nameContainer NameContainer,
-	logger *slog.Logger,
-	logLevel LogLevel,
-	logFormat LogFormat,
-) *container {
-	return &container{
-		NameContainer:      nameContainer,
-		LoggerContainer:    newLoggerContainer(logger),
-		LogLevelContainer:  newLogLevelContainer(logLevel),
-		LogFormatContainer: newLogFormatContainer(logFormat),
+func newLogFormatContainer(logFormat LogFormat) *logFormatContainer {
+	return &logFormatContainer{
+		logFormat: logFormat,
 	}
+}
+
+func (c *logFormatContainer) LogFormat() LogFormat {
+	return c.logFormat
 }
