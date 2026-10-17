@@ -137,8 +137,10 @@ func (b *builder) withEnvUsage(usage string, flagName string) string {
 	return usage + " (env " + b.envKey(flagName) + ")"
 }
 
-// envKey returns the environment variable key for the flag, for example
-// BUF_LOG_FORMAT for the flag --log-format of the app buf.
+// envKey returns the environment variable key for the flag. The key is the app
+// name and flag name joined by an underscore, uppercased, with dashes replaced
+// by underscores. For example, BUF_LOG_FORMAT for the flag --log-format of the
+// app buf.
 func (b *builder) envKey(flagName string) string {
 	return getAppNameEnvPrefix(b.appName) + strings.ToUpper(strings.ReplaceAll(flagName, "-", "_"))
 }
